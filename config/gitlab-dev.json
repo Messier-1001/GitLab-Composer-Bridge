@@ -1,0 +1,5 @@
+{
+   "apiUrl": "http://youre.gitlab.host/api/v4",
+   "apiKey": "YoureAPIKeyFromProfileEditAccount",
+   "method": "http"
+}

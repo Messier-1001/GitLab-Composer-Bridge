@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PhpProjectServersManager">
+    <servers>
+      <server host="gitlab-composer-bridge.io" id="8361876d-123e-4888-a647-5af235c25088" name="gitlab-composer-bridge.io" use_path_mappings="true">
+        <path_mappings>
+          <mapping local-root="$PROJECT_DIR$/src" remote-root="/var/projects/gitlab-composer-bridge.io/src" />
+          <mapping local-root="$PROJECT_DIR$/web" remote-root="/var/projects/gitlab-composer-bridge.io/web" />
+        </path_mappings>
+      </server>
+    </servers>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />
+</project>

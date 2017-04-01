@@ -1,0 +1,12 @@
+{
+   "name": "messier1001/gitlab-composer-bridge",
+   "license": "MIT",
+   "require": {
+      "messier1001/messier.httpclient": "^0.1.0"
+   },
+   "autoload": {
+      "psr-4": {
+         "Messier\\GCB\\": "src/"
+      }
+   }
+}
