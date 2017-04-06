@@ -11,6 +11,7 @@ use Messier\GCB\GitLab\API\BranchOrTag;
 use Messier\GCB\GitLab\API\Project;
 use Messier\GCB\GitLab\API\ProjectCollection;
 use Messier\GCB\GitLab\API\User;
+use Messier\GCB\Packages\Application;
 use Messier\HttpClient\Client;
 
 
@@ -40,6 +41,11 @@ class Api
     * @type string See {@see GitLabApi::REPO_URL_TYPE_SSH} and {@see GitLabApi::REPO_URL_TYPE_HTTP}
     */
    private $_repoUrlType;
+
+   /**
+    * @type \Messier\GCB\Packages\Application
+    */
+   private $_app;
 
    // </editor-fold>
 
@@ -228,7 +234,7 @@ class Api
       // case depending to project path with namespace (group)
       if ( ! \is_array( $composerJSON ) ||
            ! isset( $composerJSON[ 'name' ] ) ||
-           0 !== \strcasecmp( $composerJSON[ 'name' ], $project->pathWithNamespace ) )
+           0 !== \strcasecmp( $composerJSON[ 'name' ], $this->_app->handleCaseless( $project->pathWithNamespace ) ) )
       {
          return null;
       }
@@ -336,10 +342,13 @@ class Api
     * and 'source' => 'reference'
     *
     * @param \Messier\GCB\GitLab\API\Project $project
+    * @param \Messier\GCB\Packages\Application $app
     * @return array|null
     */
-   public function getRefs( Project $project ) : ?array
+   public function getRefs( Project $project, Application $app ) : ?array
    {
+
+      $this->_app = $app;
 
       $data = [];
 

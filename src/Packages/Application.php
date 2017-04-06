@@ -132,13 +132,18 @@ class Application
          );
       }
 
+      if ( ! isset( $configArray[ 'caseless' ] ) || ! \is_bool( $configArray[ 'caseless' ] ) )
+      {
+         $configArray[ 'caseless' ] = false;
+      }
+
       $this->_config = $configArray;
 
    }
    protected function loadProjectData( Project $project )
    {
 
-      $file  = $this->_rootFolder . '/cache/' . $project->pathWithNamespace . '.json';
+      $file  = $this->_rootFolder . '/cache/' . $this->handleCaseless( $project->pathWithNamespace ) . '.json';
       $mTime = $project->lastActivityAt->getTimestamp();
       $dir   = \dirname( $file );
 
@@ -151,6 +156,7 @@ class Application
       }
       \chmod( $dir, 0777 );
 
+      // If cache exists and is valid return it
       if ( \file_exists( $file ) && \filemtime( $file ) >= $mTime )
       {
 
@@ -163,10 +169,11 @@ class Application
 
       }
 
-      $data = $this->_api->getRefs( $project );
+      $data = $this->_api->getRefs( $project, $this );
 
       if ( null !== $data )
       {
+
          \file_put_contents( $file, \json_encode( $data ) );
          \chmod( $file, 0777 );
          \touch( $file, $mTime );
@@ -181,6 +188,12 @@ class Application
       \touch( $file, $mTime );
 
       return false;
+
+   }
+   public function handleCaseless( string $str ) : string
+   {
+
+      return $this->_config[ 'caseless' ] ? \strtolower( $str ) : $str;
 
    }
 
@@ -227,7 +240,7 @@ class Application
             {
                // Loading of project data (it means the composer.json + a bit more) from GitLab API was successful
                // Remember the project data
-               $packages[ $project->pathWithNamespace ] = $package;
+               $packages[ $this->handleCaseless( $project->pathWithNamespace ) ] = $package;
             }
 
          }
